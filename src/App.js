@@ -1,10 +1,9 @@
 import React, {
     Component
 } from 'react';
-import friends from "./friends.json";
-import './App.css';
-import Pictures from "./components/Pictures";
-import Wrapper from "./components/Wrapper";
+import friends from "./cards.json";
+import Pictures from "./components/ClickCard/ClickCard";
+
 
 var score = 0;
 var topScore = 0;
@@ -24,19 +23,23 @@ class App extends Component {
         friends: friends,
         score: score,
         topScore: 0,
-        text: ""
+        text: "",
+        click: []
     };
 
-    toggleClick = (chosen, id) => {
+    toggleClick = (id) => {
         var newObj = friends[id];
-        if (chosen === false) {
+        if (this.state.click.indexOf(id) === -1) {
             score++;
-            newObj.chosen = true;
-            friends[id] = newObj;
+
+            var clickedArray = this.state.click;
+            clickedArray.push(id);
+
             shuffleArray(friends);
             this.setState({
                 friends: friends,
-                score: score
+                score: score,
+                click: clickedArray
             });
         } else {
             topScore = (topScore < score) ? score : topScore;
@@ -54,7 +57,7 @@ class App extends Component {
 
     };
     render() {
-        return ( < Wrapper >
+        return ( < div >
             <div >
             <h5 > Score: {
                 this.state.score
@@ -91,7 +94,7 @@ class App extends Component {
 
             </div>
 
-            </Wrapper>
+            </div>
         );
     }
 }
